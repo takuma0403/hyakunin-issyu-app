@@ -1,10 +1,10 @@
 <template>
     <div class="grid-wrapper">
       <div class="grid-container">
-        <button class="grid-item red" @click="handleClick('Red')"></button>
-        <button class="grid-item blue" @click="handleClick('Blue')"></button>
-        <button class="grid-item yellow" @click="handleClick('Yellow')"></button>
-        <button class="grid-item green" @click="handleClick('Green')"></button>
+        <button class="grid-item button1" @click="handleClick('button1')"></button>
+        <button class="grid-item button2" @click="handleClick('button2')"></button>
+        <button class="grid-item button3" @click="handleClick('button3')"></button>
+        <button class="grid-item button4" @click="handleClick('button4')"></button>
       </div>
     </div>
   </template>
@@ -35,9 +35,9 @@
   .grid-container {
     display: grid;
     grid-template-areas:
-      "red red blue blue"
-      "red red green green"
-      "yellow yellow green green";
+      "button1 button1 button2 button2"
+      "button1 button1 button4 button4"
+      "button3 button3 button4 button4";
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 10px;
@@ -56,24 +56,24 @@
     cursor: pointer;
   }
   
-  .red {
-    grid-area: red;
-    background-color: red;
+  .button1 {
+    grid-area: button1;
+    background-color: #E4C087;
   }
   
-  .blue {
-    grid-area: blue;
-    background-color: cyan;
+  .button2 {
+    grid-area: button2;
+    background-color: #F6EFBD;
   }
   
-  .yellow {
-    grid-area: yellow;
-    background-color: yellow;
+  .button3 {
+    grid-area: button3;
+    background-color: #BC7C7C;
   }
   
-  .green {
-    grid-area: green;
-    background-color: limegreen;
+  .button4 {
+    grid-area: button4;
+    background-color: #A2D2DF;
   }
   </style>
   

@@ -1,8 +1,16 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 import random
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # インスタンスを管理する
 instances = {}

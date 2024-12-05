@@ -26,7 +26,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    width: 100vh;
     background-color: black;
     padding: 10px;
     box-sizing: border-box;
@@ -40,7 +40,7 @@
       "button3 button3 button4 button4";
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    gap: 10px;
+    gap: 16px;
     aspect-ratio: 4 / 3;
     width: 100%;
     height: 100%;
@@ -52,7 +52,7 @@
   
   .grid-item {
     border: none;
-    border-radius: 10px;
+    border-radius: 16px;
     cursor: pointer;
   }
   

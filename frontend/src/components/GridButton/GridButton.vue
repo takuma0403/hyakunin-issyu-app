@@ -1,7 +1,7 @@
 <template>
   <div class="grid-wrapper">
     <div class="grid-container">
-      <button class="grid-item button1" @click="handleClick('button1')"></button>
+      <button class="grid-item button1" @click="handleClick('button1')">一時停止</button>
       <button class="grid-item button2" @click="toggleIcon">
         <div class="icon-container">
           <img
@@ -30,8 +30,8 @@
         </div>
       </button>
 
-      <button class="grid-item button3" @click="handleClick('button3')"></button>
-      <button class="grid-item button4" @click="handleClick('button4')"></button>
+      <button class="grid-item button3" @click="handleClick('button3')">読み上げを始める</button>
+      <button class="grid-item button4" @click="handleClick('button4')">次の句</button>
     </div>
   </div>
 </template>
@@ -40,7 +40,7 @@
 import { ref, onMounted } from 'vue'
 import speakerOnIcon from '@/assets/speaker.svg'
 import speakerOffIcon from '@/assets/speaker_off.svg'
-import { playAudioWithSlider, setVolume } from '@/utl.ts'
+import { playAudioWithSlider, setVolume } from '@/components/GridButton'
 
 export default {
   setup() {

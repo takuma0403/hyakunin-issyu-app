@@ -3,7 +3,7 @@
   </template>
   
   <script lang="ts">
-  import GridButtons from '../components/GridButton.vue';
+  import GridButtons from '../components/GridButton/GridButton.vue';
   
   export default {
     components: {

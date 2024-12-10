@@ -15,20 +15,22 @@ export async function startNewGame() {
   getNext()
 }
 
+let PoemId: string | null = null
+
 export async function getNext() {
   try {
     const requestUrl = `${apiUrl}/next/${gameId}`
     const response = await axios.get(requestUrl)
     const nextPoemId = response.data.poem_id
-    console.log(nextPoemId)
+    PoemId = nextPoemId
   } catch (error) {
     throw error
   }
 }
 
-export async function fetchMp3File(number: string): Promise<Blob> {
+export async function fetchMp3File(): Promise<Blob> {
   try {
-    const requestUrl = `${apiUrl}/audio/${number}`
+    const requestUrl = `${apiUrl}/audio/${PoemId}`
 
     const response = await axios.get(requestUrl, {
       responseType: 'blob',
@@ -49,7 +51,7 @@ export function setVolume(value: string): void {
   }
 }
 
-export async function playAudioWithSlider(number: string): Promise<void> {
+export async function playAudioWithSlider(): Promise<void> {
   try {
     if (audioInstance) {
       audioInstance.pause()
@@ -57,7 +59,7 @@ export async function playAudioWithSlider(number: string): Promise<void> {
       audioInstance = null
     }
 
-    const audioBlob = await fetchMp3File(number)
+    const audioBlob = await fetchMp3File()
     const audioUrl = URL.createObjectURL(audioBlob)
 
     audioInstance = new Audio(audioUrl)

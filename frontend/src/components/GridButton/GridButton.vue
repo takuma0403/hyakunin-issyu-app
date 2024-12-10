@@ -1,7 +1,7 @@
 <template>
   <div class="grid-wrapper">
     <div class="grid-container">
-      <button class="grid-item button1" @click="handleClick('button1')">一時停止</button>
+      <button class="grid-item button1" @click="handleClick()">一時停止</button>
       <button class="grid-item button2" @click="toggleIcon">
         <div class="icon-container">
           <img
@@ -53,14 +53,13 @@ export default {
       setVolumeOrMute()
     }
 
-    const handleClick = (color: string) => {
-      alert(`${color} button clicked!`)
-      handlePlayAudio('001')
+    const handleClick = () => {
+      handlePlayAudio()
     }
 
-    async function handlePlayAudio(number: string) {
+    async function handlePlayAudio() {
       try {
-        await playAudioWithSlider(number)
+        await playAudioWithSlider()
       } catch (error) {
         console.error('Error during audio playback:', error)
       }

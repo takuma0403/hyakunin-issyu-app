@@ -21,7 +21,7 @@
               (event) => {
                 const target = event.target as HTMLInputElement
                 if (target) {
-                  setVolume(target.value)
+                  handleChangeVolume(target.value)
                 }
               }
             "
@@ -45,10 +45,12 @@ import { playAudioWithSlider, setVolume } from '@/utl.ts'
 export default {
   setup() {
     const isSpeakerOn = ref(true)
-    const sliderHeight = ref('50px') // スライダーの初期高さ
+    const sliderHeight = ref('50px')
+    const volume = ref(sliderHeight.value.replace('px', ''))
 
     const toggleIcon = () => {
       isSpeakerOn.value = !isSpeakerOn.value
+      setVolumeOrMute()
     }
 
     const handleClick = (color: string) => {
@@ -64,6 +66,19 @@ export default {
       }
     }
 
+    const handleChangeVolume = (newVolume: string) => {
+      volume.value = newVolume
+      setVolumeOrMute()
+    }
+
+    const setVolumeOrMute = () => {
+      if (isSpeakerOn.value) {
+        setVolume(volume.value)
+      } else {
+        setVolume('0')
+      }
+    }
+
     onMounted(() => {
       const iconElement = document.querySelector('.icon') as HTMLElement
       if (iconElement) {
@@ -75,7 +90,7 @@ export default {
       handleClick,
       toggleIcon,
       handlePlayAudio,
-      setVolume,
+      handleChangeVolume,
       isSpeakerOn,
       speakerOnIcon,
       speakerOffIcon,

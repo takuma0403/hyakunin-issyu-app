@@ -48,10 +48,12 @@ def get_next_poem(instance_id: int):
     # poem_idを2桁のゼロ埋めでフォーマット
     formatted_poem_id = str(poem_id).zfill(3)  # 例: 1 -> "001", 11 -> "011"
 
+    poem_id = formatted_poem_id
     poem_text = f"Poem {formatted_poem_id}"  # 実際の句を格納するならここを修正
     audio_file = f"./audio/{formatted_poem_id}.mp3"
 
     return {
+        "poem_id": poem_id,
         "poem_text": poem_text,
         "audio_url": f"/audio/{formatted_poem_id}"
     }

@@ -30,8 +30,8 @@
         </div>
       </button>
 
-      <button class="grid-item button3" @click="handleClick('button3')">読み上げを始める</button>
-      <button class="grid-item button4" @click="handleClick('button4')">次の句</button>
+      <button class="grid-item button3" @click="handleClickStartGame">読み上げを始める</button>
+      <button class="grid-item button4" @click="handleClickNext">次の句</button>
     </div>
   </div>
 </template>
@@ -40,7 +40,7 @@
 import { ref, onMounted } from 'vue'
 import speakerOnIcon from '@/assets/speaker.svg'
 import speakerOffIcon from '@/assets/speaker_off.svg'
-import { playAudioWithSlider, setVolume } from '@/components/GridButton'
+import { playAudioWithSlider, setVolume , startNewGame, getNext} from '@/components/GridButton'
 
 export default {
   setup() {
@@ -71,6 +71,14 @@ export default {
       setVolumeOrMute()
     }
 
+    const handleClickStartGame = () => {
+      startNewGame()
+    }
+
+    const handleClickNext = () => {
+      getNext()
+    }
+
     const setVolumeOrMute = () => {
       if (isSpeakerOn.value) {
         setVolume(volume.value)
@@ -91,6 +99,8 @@ export default {
       toggleIcon,
       handlePlayAudio,
       handleChangeVolume,
+      handleClickStartGame,
+      handleClickNext,
       isSpeakerOn,
       speakerOnIcon,
       speakerOffIcon,

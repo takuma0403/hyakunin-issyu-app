@@ -10,23 +10,25 @@
             class="icon"
             ref="speakerIcon"
           />
-          <input
-            id="volume-slider"
-            type="range"
-            min="0"
-            max="100"
-            value="50"
-            class="volume-slider"
-            @input="
-              (event) => {
-                const target = event.target as HTMLInputElement
-                if (target) {
-                  handleChangeVolume(target.value)
-                }
-              }
-            "
-            @click.stop
-          />
+          <div class="slider-container">
+            <input
+              id="volume-slider"
+              type="range"
+              min="0"
+              max="100"
+              value="50"
+              class="volume-slider"
+              :style="{ background: sliderBackground }"
+              @input="handleChangeVolume($event)"
+              @mousedown="isDragging = true"
+              @mouseup="isDragging = false"
+              @mouseleave="isDragging = false"
+              @click.stop
+            />
+            <div v-if="isDragging" class="tooltip" :style="{ left: tooltipPosition + 'px' }">
+              {{ volume }}
+            </div>
+          </div>
         </div>
       </button>
 
@@ -40,13 +42,16 @@
 import { ref, onMounted } from 'vue'
 import speakerOnIcon from '@/assets/speaker.svg'
 import speakerOffIcon from '@/assets/speaker_off.svg'
-import { playAudioWithSlider, setVolume , startNewGame, getNext} from '@/components/GridButton'
+import { playAudioWithSlider, setVolume, startNewGame, getNext } from '@/components/GridButton'
 
 export default {
   setup() {
     const isSpeakerOn = ref(true)
+    const isDragging = ref(false)
     const sliderHeight = ref('50px')
     const volume = ref(sliderHeight.value.replace('px', ''))
+    const sliderBackground = ref('')
+    const tooltipPosition = ref(0)
 
     const toggleIcon = () => {
       isSpeakerOn.value = !isSpeakerOn.value
@@ -65,9 +70,22 @@ export default {
       }
     }
 
-    const handleChangeVolume = (newVolume: string) => {
-      volume.value = newVolume
-      setVolumeOrMute()
+    const handleChangeVolume = (event: Event) => {
+      const target = event.target as HTMLInputElement
+      if (target) {
+        volume.value = String(target.value)
+        updateSliderBackground(volume.value)
+
+        // スライダー内での相対位置を計算
+        const sliderWidth = target.offsetWidth
+        const thumbPosition = sliderWidth * (Number(volume.value) / 100)
+        tooltipPosition.value = thumbPosition
+        setVolumeOrMute()
+      }
+    }
+
+    const updateSliderBackground = (value: string) => {
+      sliderBackground.value = `linear-gradient(to right, #a2d2df ${value}%, #ffffff ${value}%)`
     }
 
     const handleClickStartGame = () => {
@@ -88,6 +106,7 @@ export default {
 
     onMounted(() => {
       const iconElement = document.querySelector('.icon') as HTMLElement
+      updateSliderBackground(volume.value)
       if (iconElement) {
         sliderHeight.value = `${iconElement.offsetHeight * 2}px`
       }
@@ -101,6 +120,10 @@ export default {
       handleClickStartGame,
       handleClickNext,
       isSpeakerOn,
+      isDragging,
+      volume,
+      tooltipPosition,
+      sliderBackground,
       speakerOnIcon,
       speakerOffIcon,
       sliderHeight,
@@ -182,13 +205,25 @@ export default {
 }
 
 .volume-slider {
-  -webkit-appearance: none;
-  width: 100px; /* スライダーの幅 */
-  height: 12px; /* スライダーの太さ */
-  background: linear-gradient(to right, #a2d2df, #bc7c7c);
+  appearance: none;
+  width: 100px;
+  height: 12px;
   border-radius: 8px;
   outline: none;
   cursor: pointer;
+}
+
+.tooltip {
+  position: absolute;
+  bottom: 40px; /* スライダーの下に配置 */
+  background-color: #000;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  transform: translateX(-50%);
+  pointer-events: none; /* マウスイベントを無効化 */
 }
 
 .volume-slider::-webkit-slider-thumb {

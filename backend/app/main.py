@@ -62,4 +62,6 @@ def get_next_poem(instance_id: int):
 @app.get("/audio/{poem_id}")
 def get_audio(poem_id: str):
     audio_file = f"./audio/a{poem_id}.mp3"
+    if not poem_id:
+        return "Your poem_id is None !"
     return FileResponse(audio_file)

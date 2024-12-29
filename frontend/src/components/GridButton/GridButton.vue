@@ -1,4 +1,5 @@
 <template>
+  <div color="white">残り枚数 {{ remainingNumber }}</div>
   <div class="grid-wrapper">
     <div class="grid-container">
       <button class="grid-item button1" @click="handleClick()">一時停止</button>
@@ -52,6 +53,7 @@ export default {
     const volume = ref(sliderHeight.value.replace('px', ''))
     const sliderBackground = ref('')
     const tooltipPosition = ref(0)
+    const remainingNumber = ref(100)
 
     const toggleIcon = () => {
       isSpeakerOn.value = !isSpeakerOn.value
@@ -89,11 +91,14 @@ export default {
     }
 
     const handleClickStartGame = () => {
+      remainingNumber.value = 99
       startNewGame()
     }
 
-    const handleClickNext = () => {
-      getNext()
+    async function handleClickNext() {
+      remainingNumber.value -= 1
+      await getNext()
+      await playAudioWithSlider()
     }
 
     const setVolumeOrMute = () => {
@@ -127,6 +132,7 @@ export default {
       speakerOnIcon,
       speakerOffIcon,
       sliderHeight,
+      remainingNumber,
     }
   },
 }

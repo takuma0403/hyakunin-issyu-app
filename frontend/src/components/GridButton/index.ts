@@ -12,7 +12,8 @@ export async function startNewGame() {
   } catch (error) {
     throw error
   }
-  getNext()
+  await getNext()
+  await playAudioWithSlider()
 }
 
 let PoemId: string | null = null
@@ -52,6 +53,7 @@ export function setVolume(value: string): void {
 }
 
 export async function playAudioWithSlider(): Promise<void> {
+  const startTime: Date = new Date()
   try {
     if (audioInstance) {
       audioInstance.pause()
@@ -63,7 +65,16 @@ export async function playAudioWithSlider(): Promise<void> {
     const audioUrl = URL.createObjectURL(audioBlob)
 
     audioInstance = new Audio(audioUrl)
-    audioInstance.volume = 0.5
+
+    const elapsedTime = () => {
+      const currentTime: Date = new Date()
+      return (currentTime.getTime() - startTime.getTime()) / 1000
+    }
+
+    while (elapsedTime() < 3) {
+      await new Promise((resolve) => setTimeout(resolve, 10))
+    }
+
     await audioInstance.play()
 
     audioInstance.onended = () => {
